@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="icon" href="data:,">
+
   <!-- Yandex SmartCaptcha (auto method) -->
   <script>
     // Must exist BEFORE captcha.js loads.
@@ -228,7 +228,22 @@
       font-family: inherit;
       font-size: 14px;
     }
-    .checkbox { font-size: 13px; margin-bottom: 8px; color: var(--text-muted); }
+    .checkbox { font-size: 13px; margin-bottom: 10px; color: var(--text-muted); }
+    .checkbox label{
+      display:flex;
+      align-items:flex-start;
+      gap:10px;
+      cursor:pointer;
+      user-select:none;
+      line-height:1.35;
+    }
+    .checkbox input[type="checkbox"]{
+      margin: 2px 0 0 0;
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+      accent-color: var(--accent);
+    }
     .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
     .status { margin-top: 10px; font-size: 13px; }
     .status.err { color: var(--danger); }
@@ -369,8 +384,29 @@
     <label for="email">Email</label>
     <input id="email" type="email" placeholder="name@example.com" autocomplete="email">
 
-    <label for="message">Сообщение</label>
+    <label for="message" id="messageLabel">Сообщение</label>
     <textarea id="message" rows="4" placeholder="Опишите ситуацию / чем помочь"></textarea>
+
+    <!-- Extra fields: shown depending on form type -->
+    <div id="helpFields" style="display:none;">
+      <label for="needAmount">Сумма (если известна)</label>
+      <input id="needAmount" type="text" inputmode="numeric" placeholder="Например: 25 000 ₽ (необязательно)">
+    </div>
+
+    <div id="offerFields" style="display:none;">
+      <label for="offerType">Чем вы готовы помочь</label>
+      <select id="offerType" style="width:100%;padding:10px;margin-bottom:12px;border-radius:10px;border:1px solid var(--border);font-family:inherit;font-size:14px;background:#fff;">
+        <option value="">Выберите вариант</option>
+        <option value="money">Финансово</option>
+        <option value="things">Вещами</option>
+        <option value="services">Услугами / экспертизой</option>
+        <option value="volunteer">Волонтёрством</option>
+        <option value="other">Другое</option>
+      </select>
+
+      <label for="offerDetails">Детали (опционально)</label>
+      <input id="offerDetails" type="text" placeholder="Например: готов помочь с покупкой лекарств / доставкой / консультацией">
+    </div>
 
     <div class="checkbox">
       <label><input id="consentPd" type="checkbox"> Согласен(а) на обработку персональных данных</label>
@@ -380,14 +416,13 @@
     </div>
 
     <div class="captcha-wrap">
-<div
-  id="captcha-container"
-  class="smart-captcha"
-  data-sitekey="..."
-  data-hl="ru"
-  data-callback="onCaptchaToken"
-  data-robustness="standard"
-></div>
+      <div
+        id="captcha-container"
+        class="smart-captcha"
+        data-sitekey="ysc1_3kDwCVHsV58wgA8wXdwv7naACSsR6hez9vk1OuzHa4b54514"
+        data-hl="ru"
+        data-callback="onCaptchaToken"
+      ></div>
     </div>
 
     <div class="modal-actions">
@@ -421,14 +456,30 @@
   function openForm(type, postId) {
     currentFormType = type || "help";
     currentPostId = postId || "";
-    document.getElementById("modalTitle").textContent =
-      (currentFormType === "donate") ? "Хочу помочь" : "Заявка на помощь";
+
+    const isOffer = (currentFormType === "donate"); // "donate" == offer to help
+    document.getElementById("modalTitle").textContent = isOffer ? "Хочу помочь" : "Заявка на помощь";
+
+    // Toggle fieldsets
+    document.getElementById("helpFields").style.display = isOffer ? "none" : "block";
+    document.getElementById("offerFields").style.display = isOffer ? "block" : "none";
+
+    // Adjust labels/placeholders
+    const msgLabel = document.getElementById("messageLabel");
+    const msg = document.getElementById("message");
+    if (isOffer) {
+      msgLabel.textContent = "Сообщение (как именно хотите помочь)";
+      msg.placeholder = "Например: готов помочь финансово / волонтёрством / вещами…";
+    } else {
+      msgLabel.textContent = "Сообщение (опишите ситуацию)";
+      msg.placeholder = "Опишите ситуацию / чем помочь";
+    }
+
     setStatus("", "");
     document.getElementById("submitBtn").disabled = false;
     document.getElementById('modal').classList.add('active');
   }
-
-  function closeForm() {
+function closeForm() {
     document.getElementById('modal').classList.remove('active');
     setStatus("", "");
     captchaToken = "";
@@ -543,6 +594,9 @@
     const phone = document.getElementById("phone").value.trim();
     const email = document.getElementById("email").value.trim();
     const message = document.getElementById("message").value.trim();
+    const needAmount = (document.getElementById("needAmount")?.value || "").trim();
+    const offerType = (document.getElementById("offerType")?.value || "").trim();
+    const offerDetails = (document.getElementById("offerDetails")?.value || "").trim();
     const consent_pd = document.getElementById("consentPd").checked;
     const consent_msg = document.getElementById("consentMsg").checked;
 
@@ -571,11 +625,15 @@
     try {
       const payload = {
         type: currentFormType,
+        kind: (currentFormType === "donate") ? "help_offer" : "help_request",
         post_id: currentPostId,
         fio,
         phone,
         email,
         message,
+        need_amount: needAmount,
+        offer_type: offerType,
+        offer_details: offerDetails,
         consent_pd,
         consent_msg,
         captcha_token: tokenToUse
@@ -596,6 +654,9 @@
       setStatus("Готово! Заявка отправлена. Мы свяжемся с вами.", "ok");
 
       document.getElementById("message").value = "";
+      const na = document.getElementById("needAmount"); if (na) na.value = "";
+      const ot = document.getElementById("offerType"); if (ot) ot.value = "";
+      const od = document.getElementById("offerDetails"); if (od) od.value = "";
       captchaToken = "";
       window.__captchaToken = "";
       try {
