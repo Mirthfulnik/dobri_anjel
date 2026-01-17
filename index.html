@@ -23,8 +23,36 @@
   }
   // keep compatibility if widget calls after load
   window.onCaptchaToken = function(token){ onCaptchaToken(token); onCaptchaTokenMirror(token); };
+
+  function showThankYou(){
+    const ty = document.getElementById('thankyou');
+    if (!ty) return;
+    ty.classList.add('active');
+    ty.setAttribute('aria-hidden','false');
+  }
+  function closeThankYou(){
+    const ty = document.getElementById('thankyou');
+    if (!ty) return;
+    ty.classList.remove('active');
+    ty.setAttribute('aria-hidden','true');
+  }
+
 </script>
-  <script src="https://smartcaptcha.cloud.yandex.ru/captcha.js" async defer></script>
+  <script src="https://smartcaptcha.cloud.yandex.ru/captcha.js" async defer>
+  function showThankYou(){
+    const ty = document.getElementById('thankyou');
+    if (!ty) return;
+    ty.classList.add('active');
+    ty.setAttribute('aria-hidden','false');
+  }
+  function closeThankYou(){
+    const ty = document.getElementById('thankyou');
+    if (!ty) return;
+    ty.classList.remove('active');
+    ty.setAttribute('aria-hidden','true');
+  }
+
+</script>
 
   <style>
     :root {
@@ -290,6 +318,42 @@
   }
 }
 
+
+/* === Scrollable modal content (mobile friendly) === */
+.modal { 
+  padding: 16px 12px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.modal-content{
+  max-height: calc(100vh - 32px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* iOS safe areas */
+@supports (padding: env(safe-area-inset-top)) {
+  .modal { 
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .modal-content{
+    max-height: calc(100vh - max(32px, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
+  }
+}
+
+/* Keep footer buttons visible-ish on small screens */
+.modal-actions{
+  position: sticky;
+  bottom: 0;
+  background: #fff;
+  padding-top: 10px;
+  margin-top: 10px;
+  box-shadow: 0 -10px 20px rgba(0,0,0,0.04);
+}
+
 </style>
 </head>
 
@@ -543,6 +607,7 @@ function closeForm() {
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeForm();
+      showThankYou();
       closeMobileMenu();
     }
   });
@@ -703,7 +768,38 @@ function closeForm() {
   }
 
   document.addEventListener("DOMContentLoaded", loadPosts);
+
+  function showThankYou(){
+    const ty = document.getElementById('thankyou');
+    if (!ty) return;
+    ty.classList.add('active');
+    ty.setAttribute('aria-hidden','false');
+  }
+  function closeThankYou(){
+    const ty = document.getElementById('thankyou');
+    if (!ty) return;
+    ty.classList.remove('active');
+    ty.setAttribute('aria-hidden','true');
+  }
+
 </script>
+
+
+  <!-- Thank you modal -->
+  <div id="thankyou" class="modal" aria-hidden="true">
+    <div class="modal-content" style="max-width:520px;">
+      <div class="modal-header" style="display:flex;align-items:center;justify-content:space-between;">
+        <h3 style="margin:0;">Спасибо!</h3>
+        <button class="icon-btn" onclick="closeThankYou()" aria-label="Закрыть">✕</button>
+      </div>
+      <p style="margin:12px 0 0;color:var(--text-muted);line-height:1.5;">
+        Спасибо за обращение, скоро мы с Вами свяжемся.
+      </p>
+      <div class="modal-actions" style="margin-top:18px;">
+        <button class="btn btn-secondary" type="button" onclick="closeThankYou()">Закрыть</button>
+      </div>
+    </div>
+  </div>
 
 </body>
 </html>
