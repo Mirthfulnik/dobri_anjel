@@ -13,6 +13,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
   <!-- Yandex SmartCaptcha (auto method) -->
+  <script>
+    // SmartCaptcha calls this function name from data-callback.
+    // It must exist BEFORE captcha.js loads (captcha.js may load before body scripts).
+    window.__captchaToken = "";
+    // onCaptchaToken is defined in <head> before captcha.js loads.
+</script>
   <script src="https://smartcaptcha.cloud.yandex.ru/captcha.js" async defer></script>
 
   <style>
@@ -420,6 +426,7 @@
     document.getElementById('modal').classList.remove('active');
     setStatus("", "");
     captchaToken = "";
+    window.__captchaToken = "";
     try {
       if (window.smartCaptcha && window.smartCaptcha.reset) window.smartCaptcha.reset();
     } catch (e) {}
@@ -541,7 +548,12 @@
       setStatus("Заполните ФИО, сообщение и телефон или email.", "err");
       return;
     }
-    if (!captchaToken) {
+    // Token can arrive via callback OR be written into a hidden input inside the widget container.
+    const domTokenEl = document.querySelector('#captcha-container input[name="smart-token"]');
+    const domToken = domTokenEl ? (domTokenEl.value || "").trim() : "";
+    const tokenToUse = (window.__captchaToken || captchaToken || domToken).trim();
+
+    if (!tokenToUse) {
       setStatus("Пожалуйста, пройдите проверку SmartCaptcha.", "err");
       return;
     }
@@ -560,7 +572,7 @@
         message,
         consent_pd,
         consent_msg,
-        captcha_token: captchaToken
+        captcha_token: tokenToUse
       };
 
       const res = await fetch(`${API_BASE}/api/form/submit`, {
@@ -579,6 +591,8 @@
 
       document.getElementById("message").value = "";
       captchaToken = "";
+      window.__captchaToken = "";
+    window.__captchaToken = "";
       try {
         if (window.smartCaptcha && window.smartCaptcha.reset) window.smartCaptcha.reset();
       } catch (e) {};
