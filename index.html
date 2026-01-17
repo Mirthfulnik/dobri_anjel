@@ -11,7 +11,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-
+  <link rel="icon" href="data:,">
   <!-- Yandex SmartCaptcha (auto method) -->
   <script>
     // Must exist BEFORE captcha.js loads.
@@ -380,13 +380,14 @@
     </div>
 
     <div class="captcha-wrap">
-      <div
-        id="captcha-container"
-        class="smart-captcha"
-        data-sitekey="ysc1_3kDwCVHsV58wgA8wXdwv7naACSsR6hez9vk1OuzHa4b54514"
-        data-hl="ru"
-        data-callback="onCaptchaToken"
-      ></div>
+<div
+  id="captcha-container"
+  class="smart-captcha"
+  data-sitekey="..."
+  data-hl="ru"
+  data-callback="onCaptchaToken"
+  data-robustness="standard"
+></div>
     </div>
 
     <div class="modal-actions">
