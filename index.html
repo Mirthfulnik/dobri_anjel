@@ -259,7 +259,38 @@
       .header-cta.desktop-only { display: none; }
       .burger { display: inline-flex; }
     }
-  </style>
+  
+/* === Modal spacing improvements === */
+.modal {
+  padding: 24px 16px;
+}
+.modal-content {
+  margin: 40px auto;
+  max-width: 520px;
+  width: 100%;
+  border-radius: 18px;
+}
+
+/* Desktop / large screens */
+@media (min-width: 768px) {
+  .modal {
+    padding: 64px 32px;
+  }
+  .modal-content {
+    margin: 80px auto;
+    max-width: 640px;
+  }
+}
+
+/* Very large screens */
+@media (min-width: 1200px) {
+  .modal-content {
+    margin: 120px auto;
+    max-width: 720px;
+  }
+}
+
+</style>
 </head>
 
 <body>
