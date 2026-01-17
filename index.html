@@ -14,10 +14,15 @@
 
   <!-- Yandex SmartCaptcha (auto method) -->
   <script>
-    // SmartCaptcha calls this function name from data-callback.
-    // It must exist BEFORE captcha.js loads (captcha.js may load before body scripts).
+    // Must exist BEFORE captcha.js loads.
     window.__captchaToken = "";
-    // onCaptchaToken is defined in <head> before captcha.js loads.
+  // onCaptchaToken is declared in <head>; here we mirror it into local state.
+  function onCaptchaTokenMirror(token){
+    captchaToken = (token || "").trim();
+    if (captchaToken) setStatus("", "");
+  }
+  // keep compatibility if widget calls after load
+  window.onCaptchaToken = function(token){ onCaptchaToken(token); onCaptchaTokenMirror(token); };
 </script>
   <script src="https://smartcaptcha.cloud.yandex.ru/captcha.js" async defer></script>
 
@@ -592,7 +597,6 @@
       document.getElementById("message").value = "";
       captchaToken = "";
       window.__captchaToken = "";
-    window.__captchaToken = "";
       try {
         if (window.smartCaptcha && window.smartCaptcha.reset) window.smartCaptcha.reset();
       } catch (e) {};
