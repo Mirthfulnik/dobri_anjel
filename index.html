@@ -5,14 +5,15 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Добрый Ангел — благотворительный проект</title>
 
-  <!-- SEO -->
   <meta name="description" content="Добрый Ангел — благотворительный проект помощи людям в сложной жизненной ситуации." />
   <meta name="robots" content="index, follow" />
 
-  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Yandex SmartCaptcha (auto method) -->
+  <script src="https://smartcaptcha.cloud.yandex.ru/captcha.js" async defer></script>
 
   <style>
     :root {
@@ -23,6 +24,8 @@
       --accent: #f59e0b;
       --border: #e5e7eb;
       --radius: 14px;
+      --danger: #ef4444;
+      --ok: #10b981;
     }
     * { box-sizing: border-box; }
     body {
@@ -96,15 +99,10 @@
       align-items: center;
       justify-content: center;
     }
-    .burger .lines {
-      width: 18px;
-      height: 12px;
-      position: relative;
-    }
+    .burger .lines { width: 18px; height: 12px; position: relative; }
     .burger .lines span {
       position: absolute;
-      left: 0;
-      right: 0;
+      left: 0; right: 0;
       height: 2px;
       background: var(--text-main);
       border-radius: 2px;
@@ -113,11 +111,7 @@
     .burger .lines span:nth-child(2) { top: 5px; }
     .burger .lines span:nth-child(3) { top: 10px; }
 
-    .mobile-menu {
-      display: none;
-      border-top: 1px solid var(--border);
-      background: var(--bg-white);
-    }
+    .mobile-menu { display: none; border-top: 1px solid var(--border); background: var(--bg-white); }
     .mobile-menu.open { display: block; }
     .mobile-menu .menu-inner {
       max-width: 1100px;
@@ -136,12 +130,7 @@
       text-decoration: none;
     }
     .mobile-menu a:hover { text-decoration: none; }
-    .mobile-menu .header-cta {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 12px;
-      font-size: 14px;
-    }
+    .mobile-menu .header-cta { width: 100%; padding: 12px 14px; border-radius: 12px; font-size: 14px; }
 
     .section { margin-top: 64px; }
     h1 { font-size: 36px; margin-bottom: 16px; }
@@ -150,7 +139,7 @@
 
     .button {
       display: inline-block;
-      margin-top: 24px;
+      margin-top: 14px;
       padding: 14px 24px;
       background: var(--accent);
       color: #111827;
@@ -159,6 +148,7 @@
       cursor: pointer;
       border: none;
     }
+    .button.secondary { background: #e5e7eb; color: #111827; }
 
     .cards {
       display: grid;
@@ -172,11 +162,7 @@
       padding: 20px;
       border: 1px solid var(--border);
     }
-    .card img {
-      width: 100%;
-      border-radius: 10px;
-      margin-bottom: 12px;
-    }
+    .card img { width: 100%; border-radius: 10px; margin-bottom: 12px; }
     .card h3 { margin: 8px 0; font-size: 18px; }
     .card p { font-size: 14px; }
 
@@ -196,11 +182,7 @@
       gap: 10px;
       margin-bottom: 12px;
     }
-    .footer-links a {
-      color: var(--text-muted);
-      text-decoration: none;
-      font-weight: 600;
-    }
+    .footer-links a { color: var(--text-muted); text-decoration: none; font-weight: 600; }
     .footer-links a:hover { color: var(--text-main); text-decoration: none; }
 
     .modal {
@@ -214,15 +196,17 @@
       padding: 16px;
     }
     .modal.active { display: flex; }
+
     .modal-content {
       background: var(--bg-white);
       border-radius: var(--radius);
-      padding: 24px;
-      max-width: 420px;
+      padding: 22px;
+      max-width: 440px;
       width: 100%;
       border: 1px solid var(--border);
     }
     .modal-content h3 { margin-top: 0; }
+    .modal-content label { font-size: 12px; color: var(--text-muted); display:block; margin: 0 0 6px; }
     .modal-content input,
     .modal-content textarea {
       width: 100%;
@@ -233,21 +217,13 @@
       font-family: inherit;
       font-size: 14px;
     }
-    .checkbox {
-      font-size: 13px;
-      margin-bottom: 8px;
-      color: var(--text-muted);
-    }
-    .modal-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-top: 6px;
-    }
-    .button.secondary {
-      background: #e5e7eb;
-      color: #111827;
-    }
+    .checkbox { font-size: 13px; margin-bottom: 8px; color: var(--text-muted); }
+    .modal-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+    .status { margin-top: 10px; font-size: 13px; }
+    .status.err { color: var(--danger); }
+    .status.ok { color: var(--ok); }
+
+    .captcha-wrap { margin: 10px 0 6px; }
 
     @media (max-width: 768px) {
       .container { padding: 16px 14px; }
@@ -372,34 +348,81 @@
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-content">
     <h3 id="modalTitle">Обращение</h3>
-    <input type="text" placeholder="ФИО" autocomplete="name">
-    <input type="tel" placeholder="Телефон" autocomplete="tel">
-    <input type="email" placeholder="Email" autocomplete="email">
-    <textarea rows="4" placeholder="Опишите ситуацию"></textarea>
+
+    <label for="fio">ФИО</label>
+    <input id="fio" type="text" placeholder="Иванов Иван Иванович" autocomplete="name">
+
+    <label for="phone">Телефон</label>
+    <input id="phone" type="tel" placeholder="+7…" autocomplete="tel">
+
+    <label for="email">Email</label>
+    <input id="email" type="email" placeholder="name@example.com" autocomplete="email">
+
+    <label for="message">Сообщение</label>
+    <textarea id="message" rows="4" placeholder="Опишите ситуацию / чем помочь"></textarea>
 
     <div class="checkbox">
-      <label><input type="checkbox"> Согласен(а) на обработку персональных данных</label>
+      <label><input id="consentPd" type="checkbox"> Согласен(а) на обработку персональных данных</label>
     </div>
     <div class="checkbox">
-      <label><input type="checkbox"> Согласен(а) получать сообщения по заявке</label>
+      <label><input id="consentMsg" type="checkbox"> Согласен(а) получать сообщения по заявке</label>
+    </div>
+
+    <div class="captcha-wrap">
+      <div
+        id="captcha-container"
+        class="smart-captcha"
+        data-sitekey="ysc1_3kDwCVHsV58wgA8wXdwv7naACSsR6hez9vk1OuzHa4b54514"
+        data-hl="ru"
+        data-callback="onCaptchaToken"
+      ></div>
     </div>
 
     <div class="modal-actions">
-      <button class="button" type="button">Отправить</button>
+      <button class="button" id="submitBtn" type="button" onclick="submitForm()">Отправить</button>
       <button class="button secondary" type="button" onclick="closeForm()">Закрыть</button>
     </div>
+
+    <div class="status" id="status"></div>
   </div>
 </div>
 
 <script>
   const API_BASE = "https://d5dq8h2e1bq0n33astd3.4b4k4pg5.apigw.yandexcloud.net";
 
-  function openForm(type) {
+  let currentFormType = "help";
+  let currentPostId = "";
+  let captchaToken = "";
+
+  function setStatus(text, kind) {
+    const el = document.getElementById("status");
+    el.className = "status" + (kind ? (" " + kind) : "");
+    el.textContent = text || "";
+  }
+
+  function onCaptchaToken(token) {
+    captchaToken = token || "";
+    if (captchaToken) setStatus("", "");
+  }
+  window.onCaptchaToken = onCaptchaToken;
+
+  function openForm(type, postId) {
+    currentFormType = type || "help";
+    currentPostId = postId || "";
+    document.getElementById("modalTitle").textContent =
+      (currentFormType === "donate") ? "Хочу помочь" : "Заявка на помощь";
+    setStatus("", "");
+    document.getElementById("submitBtn").disabled = false;
     document.getElementById('modal').classList.add('active');
   }
 
   function closeForm() {
     document.getElementById('modal').classList.remove('active');
+    setStatus("", "");
+    captchaToken = "";
+    try {
+      if (window.smartCaptcha && window.smartCaptcha.reset) window.smartCaptcha.reset();
+    } catch (e) {}
   }
 
   function toggleMobileMenu() {
@@ -474,6 +497,7 @@
       }
 
       wrap.innerHTML = items.map((p) => {
+        const id = escapeHtml(p.id || "");
         const title = escapeHtml(p.title || "Нужна помощь");
         const text = escapeHtml(p.text || "");
         const img = escapeHtml(p.image_url || "");
@@ -481,12 +505,12 @@
         const amountHtml = amount ? `<p><b>Нужно:</b> ${escapeHtml(amount)}</p>` : "";
 
         return `
-          <div class="card" data-post-id="${escapeHtml(p.id)}">
-            ${img ? `<img src="${img}" alt="${title}">` : ""}
+          <div class="card" data-post-id="${id}">
+            ${img ? `<img src="${img}" alt="${title}" loading="lazy">` : ""}
             <h3>${title}</h3>
             <p>${text}</p>
             ${amountHtml}
-            <button class="button" type="button" onclick="openForm('donate')">Хочу помочь</button>
+            <button class="button" type="button" onclick="openForm('donate','${id}')">Хочу помочь</button>
           </div>
         `;
       }).join("");
@@ -494,10 +518,76 @@
       wrap.innerHTML = `
         <div class="card">
           <h3>Не удалось загрузить запросы</h3>
-          <p>Если это повторяется — нужно включить CORS в API Gateway.</p>
+          <p>Попробуйте обновить страницу.</p>
         </div>
       `;
       console.error(e);
+    }
+  }
+
+  async function submitForm() {
+    const fio = document.getElementById("fio").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const email = document.getElementById("email").value.trim();
+    const message = document.getElementById("message").value.trim();
+    const consent_pd = document.getElementById("consentPd").checked;
+    const consent_msg = document.getElementById("consentMsg").checked;
+
+    if (!consent_pd) {
+      setStatus("Нужно согласие на обработку персональных данных.", "err");
+      return;
+    }
+    if (!fio || (!phone && !email) || !message) {
+      setStatus("Заполните ФИО, сообщение и телефон или email.", "err");
+      return;
+    }
+    if (!captchaToken) {
+      setStatus("Пожалуйста, пройдите проверку SmartCaptcha.", "err");
+      return;
+    }
+
+    const btn = document.getElementById("submitBtn");
+    btn.disabled = true;
+    setStatus("Отправляем…", "");
+
+    try {
+      const payload = {
+        type: currentFormType,
+        post_id: currentPostId,
+        fio,
+        phone,
+        email,
+        message,
+        consent_pd,
+        consent_msg,
+        captcha_token: captchaToken
+      };
+
+      const res = await fetch(`${API_BASE}/api/form/submit`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json().catch(() => ({}));
+
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error || `HTTP ${res.status}`);
+      }
+
+      setStatus("Готово! Заявка отправлена. Мы свяжемся с вами.", "ok");
+
+      document.getElementById("message").value = "";
+      captchaToken = "";
+      try {
+        if (window.smartCaptcha && window.smartCaptcha.reset) window.smartCaptcha.reset();
+      } catch (e) {};
+
+      setTimeout(() => closeForm(), 1200);
+    } catch (e) {
+      console.error(e);
+      setStatus("Не удалось отправить. Попробуйте ещё раз.", "err");
+      btn.disabled = false;
     }
   }
 
