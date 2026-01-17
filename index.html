@@ -201,29 +201,7 @@
       padding: 20px;
       border: 1px solid var(--border);
     }
-    /* Ограничиваем изображение в карточке "Сегодня нужна помощь" */
-.card img {
-  width: 100%;
-  max-height: 400px;      /* ключевая строка */
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 12px;
-}
-
-/* Крупные экраны и ноутбуки */
-@media (min-width: 1200px) {
-  .card img {
-    max-height: 400px;
-  }
-}
-
-/* Мобильные — можно оставить чуть выше */
-@media (max-width: 767px) {
-  .card img {
-    max-height: 380px;
-  }
-}
-
+    .card img { width: 100%; border-radius: 10px; margin-bottom: 12px; }
     .card h3 { margin: 8px 0; font-size: 18px; }
     .card p { font-size: 14px; }
 
