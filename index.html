@@ -24,9 +24,7 @@
       --border: #e5e7eb;
       --radius: 14px;
     }
-
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
       font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -34,7 +32,6 @@
       color: var(--text-main);
       line-height: 1.6;
     }
-
     a { color: inherit; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
@@ -45,41 +42,34 @@
       top: 0;
       z-index: 10;
     }
-
     .container {
       max-width: 1100px;
       margin: 0 auto;
       padding: 24px 16px;
     }
-
     .header-inner {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 12px;
     }
-
     .logo {
       font-weight: 700;
       font-size: 20px;
       white-space: nowrap;
     }
-
-    /* Desktop nav */
     .nav-links {
       display: flex;
       align-items: center;
       gap: 16px;
       margin-left: auto;
     }
-
     .nav-links a {
       font-size: 14px;
       color: var(--text-muted);
       text-decoration: none;
     }
     .nav-links a:hover { color: var(--text-main); text-decoration: none; }
-
     .header-cta {
       display: inline-flex;
       align-items: center;
@@ -95,7 +85,6 @@
       white-space: nowrap;
     }
 
-    /* Burger */
     .burger {
       display: none;
       width: 42px;
@@ -130,7 +119,6 @@
       background: var(--bg-white);
     }
     .mobile-menu.open { display: block; }
-
     .mobile-menu .menu-inner {
       max-width: 1100px;
       margin: 0 auto;
@@ -138,7 +126,6 @@
       display: grid;
       gap: 10px;
     }
-
     .mobile-menu a {
       padding: 10px 10px;
       border: 1px solid var(--border);
@@ -149,7 +136,6 @@
       text-decoration: none;
     }
     .mobile-menu a:hover { text-decoration: none; }
-
     .mobile-menu .header-cta {
       width: 100%;
       padding: 12px 14px;
@@ -158,10 +144,8 @@
     }
 
     .section { margin-top: 64px; }
-
     h1 { font-size: 36px; margin-bottom: 16px; }
     h2 { font-size: 28px; margin-bottom: 16px; }
-
     p { color: var(--text-muted); max-width: 760px; }
 
     .button {
@@ -182,20 +166,17 @@
       gap: 24px;
       margin-top: 32px;
     }
-
     .card {
       background: var(--bg-white);
       border-radius: var(--radius);
       padding: 20px;
       border: 1px solid var(--border);
     }
-
     .card img {
       width: 100%;
       border-radius: 10px;
       margin-bottom: 12px;
     }
-
     .card h3 { margin: 8px 0; font-size: 18px; }
     .card p { font-size: 14px; }
 
@@ -204,11 +185,10 @@
       padding: 40px 16px;
       background: var(--bg-white);
       border-top: 1px solid var(--border);
-      text-align: center; /* center on desktop too */
+      text-align: center;
       font-size: 14px;
       color: var(--text-muted);
     }
-
     .footer-links {
       display: flex;
       flex-wrap: wrap;
@@ -223,7 +203,6 @@
     }
     .footer-links a:hover { color: var(--text-main); text-decoration: none; }
 
-    /* Modal */
     .modal {
       position: fixed;
       inset: 0;
@@ -234,9 +213,7 @@
       z-index: 20;
       padding: 16px;
     }
-
     .modal.active { display: flex; }
-
     .modal-content {
       background: var(--bg-white);
       border-radius: var(--radius);
@@ -245,9 +222,7 @@
       width: 100%;
       border: 1px solid var(--border);
     }
-
     .modal-content h3 { margin-top: 0; }
-
     .modal-content input,
     .modal-content textarea {
       width: 100%;
@@ -258,32 +233,26 @@
       font-family: inherit;
       font-size: 14px;
     }
-
     .checkbox {
       font-size: 13px;
       margin-bottom: 8px;
       color: var(--text-muted);
     }
-
     .modal-actions {
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
       margin-top: 6px;
     }
-
     .button.secondary {
       background: #e5e7eb;
       color: #111827;
     }
 
-    /* Mobile tweaks */
     @media (max-width: 768px) {
       .container { padding: 16px 14px; }
       h1 { font-size: 28px; }
       h2 { font-size: 22px; }
-
-      /* hide desktop nav + desktop cta; show burger */
       .nav-links { display: none; }
       .header-cta.desktop-only { display: none; }
       .burger { display: inline-flex; }
@@ -297,7 +266,6 @@
   <div class="container header-inner">
     <div class="logo">Добрый Ангел</div>
 
-    <!-- Desktop navigation -->
     <nav class="nav-links" aria-label="Навигация">
       <a href="#about">О проекте</a>
       <a href="#help">Кому мы помогаем</a>
@@ -305,12 +273,10 @@
       <a href="#done">Кому мы помогли</a>
     </nav>
 
-    <!-- Desktop CTA button (right top) -->
     <button class="header-cta desktop-only" type="button" onclick="openForm('help')">
       Оставить заявку на помощь
     </button>
 
-    <!-- Mobile burger -->
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileMenu" onclick="toggleMobileMenu()">
       <span class="lines" aria-hidden="true">
         <span></span><span></span><span></span>
@@ -318,7 +284,6 @@
     </button>
   </div>
 
-  <!-- Mobile menu panel -->
   <div class="mobile-menu" id="mobileMenu">
     <div class="menu-inner">
       <button class="header-cta" type="button" onclick="openForm('help'); closeMobileMenu();">
@@ -334,7 +299,6 @@
 
 <main class="container">
 
-  <!-- О проекте -->
   <section id="about" class="section">
     <h1>Благотворительный проект «Добрый Ангел»</h1>
     <p>
@@ -344,7 +308,6 @@
     <button class="button" type="button" onclick="openForm('help')">Оставить заявку на помощь</button>
   </section>
 
-  <!-- Кому мы помогаем -->
   <section id="help" class="section">
     <h2>Кому мы помогаем</h2>
     <div class="cards">
@@ -363,21 +326,16 @@
     </div>
   </section>
 
-  <!-- Сегодня нужна помощь -->
   <section id="today" class="section">
     <h2>Сегодня нужна помощь</h2>
     <div class="cards" id="posts">
-      <!-- В MVP — статический пример -->
       <div class="card">
-        <img src="https://via.placeholder.com/600x360?text=%D0%94%D0%BE%D0%B1%D1%80%D1%8B%D0%B9+%D0%90%D0%BD%D0%B3%D0%B5%D0%BB" alt="Добрый Ангел">
-        <h3>Срочная помощь</h3>
-        <p>Описание ситуации. Здесь будет текст запроса, который можно развернуть.</p>
-        <button class="button" type="button" onclick="openForm('donate')">Хочу помочь</button>
+        <h3>Загружаем…</h3>
+        <p>Подтягиваем актуальные запросы помощи.</p>
       </div>
     </div>
   </section>
 
-  <!-- Кому мы помогли -->
   <section id="done" class="section">
     <h2>Кому мы помогли</h2>
     <div class="cards">
@@ -411,7 +369,6 @@
   </div>
 </footer>
 
-<!-- Modal form -->
 <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
   <div class="modal-content">
     <h3 id="modalTitle">Обращение</h3>
@@ -435,6 +392,8 @@
 </div>
 
 <script>
+  const API_BASE = "https://d5dq8h2e1bq0n33astd3.4b4k4pg5.apigw.yandexcloud.net";
+
   function openForm(type) {
     document.getElementById('modal').classList.add('active');
   }
@@ -459,12 +418,10 @@
     }
   }
 
-  // Close mobile menu when resizing to desktop
   window.addEventListener('resize', () => {
     if (window.innerWidth > 768) closeMobileMenu();
   });
 
-  // Close modal/menu on ESC
   window.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') {
       closeForm();
@@ -472,10 +429,79 @@
     }
   });
 
-  // Close modal on overlay click
   document.getElementById('modal').addEventListener('click', (e) => {
     if (e.target.id === 'modal') closeForm();
   });
+
+  function escapeHtml(str) {
+    return String(str ?? "")
+      .replaceAll("&", "&amp;")
+      .replaceAll("<", "&lt;")
+      .replaceAll(">", "&gt;")
+      .replaceAll('"', "&quot;")
+      .replaceAll("'", "&#039;");
+  }
+
+  function formatAmount(amount, currency) {
+    if (amount === null || amount === undefined || amount === "") return "";
+    try {
+      const cur = currency || "₽";
+      return new Intl.NumberFormat("ru-RU").format(Number(amount)) + " " + cur;
+    } catch {
+      return String(amount) + " " + (currency || "");
+    }
+  }
+
+  async function loadPosts() {
+    const wrap = document.getElementById("posts");
+    if (!wrap) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/api/posts`, { method: "GET" });
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      const data = await res.json();
+      const items = Array.isArray(data.items) ? data.items : [];
+
+      if (items.length === 0) {
+        wrap.innerHTML = `
+          <div class="card">
+            <h3>Пока нет активных запросов</h3>
+            <p>Если вам нужна помощь — нажмите «Оставить заявку на помощь».</p>
+            <button class="button" type="button" onclick="openForm('help')">Оставить заявку на помощь</button>
+          </div>
+        `;
+        return;
+      }
+
+      wrap.innerHTML = items.map((p) => {
+        const title = escapeHtml(p.title || "Нужна помощь");
+        const text = escapeHtml(p.text || "");
+        const img = escapeHtml(p.image_url || "");
+        const amount = formatAmount(p.amount, (p.currency === "RUB" || !p.currency) ? "₽" : p.currency);
+        const amountHtml = amount ? `<p><b>Нужно:</b> ${escapeHtml(amount)}</p>` : "";
+
+        return `
+          <div class="card" data-post-id="${escapeHtml(p.id)}">
+            ${img ? `<img src="${img}" alt="${title}">` : ""}
+            <h3>${title}</h3>
+            <p>${text}</p>
+            ${amountHtml}
+            <button class="button" type="button" onclick="openForm('donate')">Хочу помочь</button>
+          </div>
+        `;
+      }).join("");
+    } catch (e) {
+      wrap.innerHTML = `
+        <div class="card">
+          <h3>Не удалось загрузить запросы</h3>
+          <p>Если это повторяется — нужно включить CORS в API Gateway.</p>
+        </div>
+      `;
+      console.error(e);
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", loadPosts);
 </script>
 
 </body>
