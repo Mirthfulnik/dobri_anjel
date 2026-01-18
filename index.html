@@ -355,6 +355,54 @@
   }
 }
 
+
+/* === Buttons alias for thankyou modal (uses .btn) === */
+.btn { 
+  display: inline-block;
+  padding: 14px 24px;
+  background: var(--accent);
+  color: #111827;
+  border-radius: var(--radius);
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+}
+.btn.btn-secondary { background: #e5e7eb; color: #111827; }
+.icon-btn{
+  width: 40px; height: 40px;
+  display:flex; align-items:center; justify-content:center;
+  border: 1px solid var(--border);
+  background:#fff;
+  border-radius: 12px;
+  cursor:pointer;
+}
+
+/* === Posts: 3 cards per row on desktop, keep mobile as is === */
+@media (min-width: 1100px) {
+  #posts.cards {
+    grid-template-columns: repeat(3, 340px);
+    justify-content: center;
+  }
+}
+
+/* === Desktop modal: wider + try to fit without inner scroll === */
+@media (min-width: 992px) {
+  .modal { padding: 24px; align-items: center; }
+  .modal-content {
+    width: min(860px, calc(100vw - 64px));
+    max-height: calc(100dvh - 64px);
+    overflow: visible; /* avoid inner scroll on desktop */
+  }
+  /* make fields more compact on desktop */
+  .modal-content input,
+  .modal-content textarea,
+  .modal-content select{
+    margin-bottom: 10px;
+    padding: 10px;
+  }
+  .captcha-wrap { margin: 8px 0 4px; }
+}
+
 </style>
 </head>
 
@@ -537,6 +585,19 @@
   let currentPostId = "";
   let captchaToken = "";
 
+  function showThankYou(){
+    const ty = document.getElementById('thankyou');
+    if (!ty) return;
+    ty.classList.add('active');
+    ty.setAttribute('aria-hidden','false');
+  }
+  function closeThankYou(){
+    const ty = document.getElementById('thankyou');
+    if (!ty) return;
+    ty.classList.remove('active');
+    ty.setAttribute('aria-hidden','true');
+  }
+
   function setStatus(text, kind) {
     const el = document.getElementById("status");
     el.className = "status" + (kind ? (" " + kind) : "");
@@ -570,6 +631,9 @@
       msgLabel.textContent = "Сообщение (опишите ситуацию)";
       msg.placeholder = "Опишите ситуацию / чем помочь";
     }
+    // Desktop: reduce textarea height so the whole form fits on screen without inner scroll
+    try { msg.rows = (window.innerWidth >= 992) ? 3 : 4; } catch(e) {}
+
 
     setStatus("", "");
     document.getElementById("submitBtn").disabled = false;
