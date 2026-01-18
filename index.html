@@ -634,11 +634,11 @@
   window.onCaptchaToken = onCaptchaToken;
 
   function openForm(type, postId) {
-  resetFormFields(); // ← ПЕРВАЯ строка
+    // очистить форму при каждом открытии (и при переключении между формами)
+    resetFormFields();
 
-  currentFormType = type || "help";
-  currentPostId = postId || "";
-}
+    currentFormType = type || "help";
+    currentPostId = postId || "";
 
     const isOffer = (currentFormType === "donate"); // "donate" == offer to help
     document.getElementById("modalTitle").textContent = isOffer ? "Хочу помочь" : "Заявка на помощь";
@@ -660,11 +660,11 @@
     // Desktop: reduce textarea height so the whole form fits on screen without inner scroll
     try { msg.rows = (window.innerWidth >= 992) ? 3 : 4; } catch(e) {}
 
-
     setStatus("", "");
     document.getElementById("submitBtn").disabled = false;
     document.getElementById('modal').classList.add('active');
   }
+
 function closeForm() {
   document.getElementById('modal').classList.remove('active');
   resetFormFields();
