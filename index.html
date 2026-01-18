@@ -356,10 +356,9 @@
 /* === Checkbox rows: icon strictly near text, no layout breaks === */
 .checkbox{ font-size: 13px; margin: 10px 0; color: var(--text-muted); }
 .checkbox label{
-  display: grid;
-  grid-template-columns: 18px 1fr;
+  display: flex;
+  align-items: flex-start;
   gap: 10px;
-  align-items: start;
   cursor: pointer;
   user-select: none;
   line-height: 1.35;
@@ -368,7 +367,19 @@
   margin: 2px 0 0 0;
   width: 18px;
   height: 18px;
+  flex: 0 0 18px;
   accent-color: var(--accent);
+}
+.checkbox .checkbox-text{
+  display: inline-block;
+  position: relative;
+}
+.checkbox label.required .checkbox-text::after{
+  content: " *";
+  color: var(--danger);
+  font-weight: 600;
+  font-size: 0.9em;
+  vertical-align: super;
 }
 
 /* === Action bar: neat rectangle with rounded corners; buttons grouped left === */
@@ -565,10 +576,10 @@
     </div>
 
     <div class="checkbox">
-      <label><input id="consentPd" type="checkbox"> Согласен(а) на обработку персональных данных <span style="color:var(--danger)">*</span></label>
+      <label class="required"><input id="consentPd" type="checkbox"> <span class="checkbox-text">Согласен(а) на обработку персональных данных</span></label>
     </div>
     <div class="checkbox">
-      <label><input id="consentMsg" type="checkbox"> Согласен(а) получать сообщения по заявке <span style="color:var(--danger)">*</span></label>
+      <label class="required"><input id="consentMsg" type="checkbox"> <span class="checkbox-text">Согласен(а) получать сообщения по заявке</span></label>
     </div>
 
     <div class="captcha-wrap">
