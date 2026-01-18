@@ -263,73 +263,16 @@
       .header-cta.desktop-only { display: none; }
       .burger { display: inline-flex; }
     }
-  
+
 
 /* === Center section titles === */
-.section h2 {
-  text-align: center;
-}
+.section h2 { text-align: center; }
 
-/* === Modal layout: consistent sizing on mobile and desktop === */
-.modal {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.4);
-  display: none;
-  z-index: 20;
-
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-
-  padding: 16px 12px;
-  align-items: flex-start;
-  justify-content: center;
-}
-.modal.active { display: flex; }
-
-.modal-content {
-  background: var(--bg-white);
-  border-radius: 18px;
-  padding: 22px;
-  border: 1px solid var(--border);
-
-  width: min(720px, calc(100vw - 24px));
-
-  max-height: calc(100dvh - 32px);
-  overflow: auto;
-  -webkit-overflow-scrolling: touch;
-
-  margin: 24px auto;
-}
-
-@supports (padding: env(safe-area-inset-top)) {
-  .modal {
-    padding-top: max(16px, env(safe-area-inset-top));
-    padding-bottom: max(16px, env(safe-area-inset-bottom));
-    padding-left: max(12px, env(safe-area-inset-left));
-    padding-right: max(12px, env(safe-area-inset-right));
-  }
-  .modal-content {
-    max-height: calc(100dvh - max(32px, env(safe-area-inset-top) + env(safe-area-inset-bottom)));
-  }
-}
-
-.modal-actions{
-  position: sticky;
-  bottom: 0;
-  background: #fff;
-  padding-top: 10px;
-  margin-top: 10px;
-  box-shadow: 0 -10px 20px rgba(0,0,0,0.04);
-}
-
-/* === Posts grid: centered & square cards on desktop === */
-#posts.cards {
-  justify-content: center;
-}
-@media (min-width: 992px) {
+/* === Posts grid: 1 column on mobile (as-is), 3 fixed cards on desktop === */
+#posts.cards { justify-content: center; }
+@media (min-width: 1100px) {
   #posts.cards {
-    grid-template-columns: repeat(auto-fit, minmax(340px, 360px));
+    grid-template-columns: repeat(3, 340px);
     justify-content: center;
   }
   #posts .card {
@@ -350,14 +293,109 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
-  #posts .card .button {
-    margin-top: auto;
+  #posts .card .button { margin-top: auto; }
+}
+
+/* === Modal: correct sizing on desktop & mobile === */
+.modal{
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  z-index: 20;
+  padding: 16px 12px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  align-items: flex-start;
+  justify-content: center;
+}
+.modal.active { display: flex; }
+
+.modal-content{
+  background: var(--bg-white);
+  border-radius: 18px;
+  border: 1px solid var(--border);
+  width: min(860px, calc(100vw - 24px));
+  margin: 24px auto;
+  padding: 22px;
+  max-height: calc(100dvh - 48px);
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Desktop: wider + compact, still safe with height */
+@media (min-width: 992px){
+  .modal { padding: 28px; align-items: center; }
+  .modal-content{
+    width: min(920px, calc(100vw - 80px));
+    max-height: calc(100dvh - 80px);
+  }
+  .modal-content label{ margin: 0 0 5px; }
+  .modal-content input,
+  .modal-content textarea,
+  .modal-content select{
+    margin-bottom: 10px;
+    padding: 10px 12px;
+  }
+  .captcha-wrap{ margin: 8px 0 6px; }
+}
+
+/* Safe-area support */
+@supports (padding: env(safe-area-inset-top)) {
+  .modal{
+    padding-top: max(16px, env(safe-area-inset-top));
+    padding-bottom: max(16px, env(safe-area-inset-bottom));
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+  }
+  .modal-content{
+    max-height: calc(100dvh - max(48px, env(safe-area-inset-top) + env(safe-area-inset-bottom) + 32px));
   }
 }
 
+/* === Checkbox rows: icon strictly near text, no layout breaks === */
+.checkbox{ font-size: 13px; margin: 10px 0; color: var(--text-muted); }
+.checkbox label{
+  display: grid;
+  grid-template-columns: 18px 1fr;
+  gap: 10px;
+  align-items: start;
+  cursor: pointer;
+  user-select: none;
+  line-height: 1.35;
+}
+.checkbox input[type="checkbox"]{
+  margin: 2px 0 0 0;
+  width: 18px;
+  height: 18px;
+  accent-color: var(--accent);
+}
 
-/* === Buttons alias for thankyou modal (uses .btn) === */
-.btn { 
+/* === Action bar: neat rectangle with rounded corners; buttons grouped left === */
+.modal-actions{
+  position: sticky;
+  bottom: 0;
+  z-index: 1;
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  background: rgba(255,255,255,0.96);
+  backdrop-filter: blur(6px);
+  box-shadow: 0 -10px 20px rgba(0,0,0,0.04);
+
+  display: flex;
+  gap: 12px;
+  justify-content: flex-start;
+  align-items: center;
+}
+.modal-actions .button{ margin: 0; }
+@media (min-width: 992px){
+  .modal-actions{ padding-left: 18px; }
+}
+
+/* Alias buttons for thankyou modal */
+.btn{
   display: inline-block;
   padding: 14px 24px;
   background: var(--accent);
@@ -367,7 +405,7 @@
   cursor: pointer;
   border: none;
 }
-.btn.btn-secondary { background: #e5e7eb; color: #111827; }
+.btn.btn-secondary{ background: #e5e7eb; color: #111827; }
 .icon-btn{
   width: 40px; height: 40px;
   display:flex; align-items:center; justify-content:center;
@@ -375,32 +413,6 @@
   background:#fff;
   border-radius: 12px;
   cursor:pointer;
-}
-
-/* === Posts: 3 cards per row on desktop, keep mobile as is === */
-@media (min-width: 1100px) {
-  #posts.cards {
-    grid-template-columns: repeat(3, 340px);
-    justify-content: center;
-  }
-}
-
-/* === Desktop modal: wider + try to fit without inner scroll === */
-@media (min-width: 992px) {
-  .modal { padding: 24px; align-items: center; }
-  .modal-content {
-    width: min(860px, calc(100vw - 64px));
-    max-height: calc(100dvh - 64px);
-    overflow: visible; /* avoid inner scroll on desktop */
-  }
-  /* make fields more compact on desktop */
-  .modal-content input,
-  .modal-content textarea,
-  .modal-content select{
-    margin-bottom: 10px;
-    padding: 10px;
-  }
-  .captcha-wrap { margin: 8px 0 4px; }
 }
 
 </style>
@@ -519,13 +531,13 @@
   <div class="modal-content">
     <h3 id="modalTitle">Обращение</h3>
 
-    <label for="fio">ФИО</label>
+    <label for="fio">ФИО <span style="color:var(--danger)">*</span></label>
     <input id="fio" type="text" placeholder="Иванов Иван Иванович" autocomplete="name">
 
-    <label for="phone">Телефон</label>
+    <label for="phone">Телефон <span style="color:var(--danger)">*</span></label>
     <input id="phone" type="tel" placeholder="+7…" autocomplete="tel">
 
-    <label for="email">Email</label>
+    <label for="email">Email <span style="color:var(--text-muted);font-weight:400">(опционально)</span></label>
     <input id="email" type="email" placeholder="name@example.com" autocomplete="email">
 
     <label for="message" id="messageLabel">Сообщение</label>
@@ -533,7 +545,7 @@
 
     <!-- Extra fields: shown depending on form type -->
     <div id="helpFields" style="display:none;">
-      <label for="needAmount">Сумма (если известна)</label>
+      <label for="needAmount">Сумма в рублях <span style="color:var(--text-muted);font-weight:400">(опционально)</span></label>
       <input id="needAmount" type="text" inputmode="numeric" placeholder="Например: 25 000 ₽ (необязательно)">
     </div>
 
@@ -553,10 +565,10 @@
     </div>
 
     <div class="checkbox">
-      <label><input id="consentPd" type="checkbox"> Согласен(а) на обработку персональных данных</label>
+      <label><input id="consentPd" type="checkbox"> Согласен(а) на обработку персональных данных <span style="color:var(--danger)">*</span></label>
     </div>
     <div class="checkbox">
-      <label><input id="consentMsg" type="checkbox"> Согласен(а) получать сообщения по заявке</label>
+      <label><input id="consentMsg" type="checkbox"> Согласен(а) получать сообщения по заявке <span style="color:var(--danger)">*</span></label>
     </div>
 
     <div class="captcha-wrap">
@@ -764,10 +776,29 @@ function closeForm() {
       setStatus("Нужно согласие на обработку персональных данных.", "err");
       return;
     }
-    if (!fio || (!phone && !email) || !message) {
-      setStatus("Заполните ФИО, сообщение и телефон или email.", "err");
+    if (!consent_msg) {
+      setStatus("Нужно согласие получать сообщения по заявке.", "err");
       return;
     }
+    if (!fio) {
+      setStatus("Укажите ФИО.", "err");
+      return;
+    }
+    if (!phone) {
+      setStatus("Укажите телефон.", "err");
+      return;
+    }
+    // Email — опционально
+    if (!message) {
+      setStatus("Заполните сообщение.", "err");
+      return;
+    }
+    const isOffer = (currentFormType === "donate");
+    if (isOffer && !offerType) {
+      setStatus("Выберите, чем вы готовы помочь.", "err");
+      return;
+    }
+
     // Token can arrive via callback OR be written into a hidden input inside the widget container.
     const domTokenEl = document.querySelector('#captcha-container input[name="smart-token"]');
     const domToken = domTokenEl ? (domTokenEl.value || "").trim() : "";
