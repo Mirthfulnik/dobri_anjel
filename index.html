@@ -634,9 +634,6 @@
   window.onCaptchaToken = onCaptchaToken;
 
   function openForm(type, postId) {
-    // очистить форму при каждом открытии (и при переключении между формами)
-    resetFormFields();
-
     currentFormType = type || "help";
     currentPostId = postId || "";
 
@@ -660,57 +657,21 @@
     // Desktop: reduce textarea height so the whole form fits on screen without inner scroll
     try { msg.rows = (window.innerWidth >= 992) ? 3 : 4; } catch(e) {}
 
+
     setStatus("", "");
     document.getElementById("submitBtn").disabled = false;
     document.getElementById('modal').classList.add('active');
   }
-
 function closeForm() {
-  document.getElementById('modal').classList.remove('active');
-  resetFormFields();
-}
+    document.getElementById('modal').classList.remove('active');
+    setStatus("", "");
+    captchaToken = "";
+    window.__captchaToken = "";
+    try {
+      if (window.smartCaptcha && window.smartCaptcha.reset) window.smartCaptcha.reset();
+    } catch (e) {}
+  }
 
-function resetFormFields() {
-  // Текстовые поля
-  const textFields = [
-    "fio",
-    "phone",
-    "email",
-    "message",
-    "needAmount",
-    "offerDetails"
-  ];
-
-  textFields.forEach(id => {
-    const el = document.getElementById(id);
-    if (el) el.value = "";
-  });
-
-  // Select
-  const offerType = document.getElementById("offerType");
-  if (offerType) offerType.value = "";
-
-  // Чекбоксы
-  const consentPd = document.getElementById("consentPd");
-  const consentMsg = document.getElementById("consentMsg");
-  if (consentPd) consentPd.checked = false;
-  if (consentMsg) consentMsg.checked = false;
-
-  // Служебные состояния
-  currentPostId = "";
-  setStatus("", "");
-
-  // Капча
-  captchaToken = "";
-  window.__captchaToken = "";
-  try {
-    if (window.smartCaptcha && window.smartCaptcha.reset) {
-      window.smartCaptcha.reset();
-    }
-  } catch (e) {}
-}
-
-  
   function toggleMobileMenu() {
     const menu = document.getElementById('mobileMenu');
     const btn = document.querySelector('.burger');
